@@ -4,6 +4,13 @@
 #myButton {
     border-radius: 30px;
 }
+#myButton2{
+    border-radius: 30px;
+    position: absolute;
+    top: 10vh;
+    right: 40vh;
+
+}
 #todo{
     position: absolute;
     left: 10px;

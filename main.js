@@ -1,4 +1,3 @@
-
 let taskContainer = document.getElementById("demo");
 
 function addTask() {
@@ -25,10 +24,18 @@ function addTask() {
         if (checkbox.checked) {
             label.style.textDecoration = "line-through"; // Задача зачёркивается
             taskContainer.appendChild(label); // Перемещаем в конец списка
+            checkbox.remove();
         } else {
             label.style.textDecoration = "none";
         }
     });
-
     taskContainer.appendChild(label);
+}
+function removeTask() {
+    let labels = document.querySelectorAll("#demo label"); // Все задачи
+    labels.forEach(label => {
+        if (label.style.textDecoration === "line-through") {
+            label.remove(); // Удаляем выполненные задачи
+        }
+    });
 }
