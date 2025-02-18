@@ -1,0 +1,38 @@
+*{
+    font-family: ".SF NS Mono", monospace;
+}
+#myButton {
+    border-radius: 30px;
+}
+#todo{
+    position: absolute;
+    left: 10px;
+    font-size: 16px;
+    font-family: ".SF NS Mono", monospace;
+}
+#creat{
+    position: absolute;
+    top: 250px;
+    left: 25vh;
+}
+#app {
+    border: 1px solid gray;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    position: absolute;
+    left: 55vh;
+}
+#demo{
+    position: relative;
+    top: 50px;
+    left: 150px;
+    align-items: center;
+    justify-content: center;
+}
+#text1{
+    border: none;
+    background-color: gray;
+    border-radius: 10px;
+    color: black;
+}
