@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap" rel="stylesheet">
+  <title>Главная</title>
+</head>
+<body>
+  <div id="maincontainer">
+    <div id="mainform">
+      <form action="" method="post">
+          <input type="text" name="newtask" placeholder="Новая задача!">
+          <button type="submit">send</button>
+      </form>
+    </div>
+    <div class="tasks">
+      <ul>
+          <% arraytask.forEach(task => { %>
+            <div class="task">
+            <li><input type="checkbox" name="" id=""><%= task.task %></li>
+              <div class="icons">
+                <div class="wrap">
+   <button type="submit" class="modal-open" data-modal="show-<%= task.id %>" title="Open Modal" 
+  style="background: none; border: none; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
+     
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="20" height="20" viewBox="0 0 20 20" 
+        style="max-width: 40px; max-height: 40px; background: none; display: block;">
+        <g fill="#040404" fill-rule="evenodd" clip-rule="evenodd">
+          <path d="M3.944 11.79a.5.5 0 0 1 .141-.277L14.163 1.435a.5.5 0 0 1 .707 0l3.89 3.89a.5.5 0 0 1 0 .706L8.68 16.11a.5.5 0 0 1-.277.14l-4.595.706a.5.5 0 0 1-.57-.57zm.964.314l-.577 3.76l3.759-.578l9.609-9.608l-3.183-3.182z"/>
+          <path d="m15.472 8.173l-3.537-3.53l.707-.708l3.536 3.53z"/>
+        </g>
+      </svg>
+   </button>
+    <div class="overlay" id="show-<%= task.id %>">
+      <div class="modal">
+        <svg xmlns="http://www.w3.org/2000/svg" width="560" height="280" viewBox="0 0 560 280" preserveAspectRatio="xMidYMid meet">
+          <line id="svg_3" fill="none" stroke="#02a2ef" stroke-width="2" x1="2" y1="2" x2="558" y2="2"/>
+          <line id="svg_4" fill="none" stroke="#02a2ef" stroke-width="2" x1="558" y1="278" x2="558" y2="2"/>
+          <line id="svg_2" fill="none" stroke="#02a2ef" stroke-width="2" x1="2" y1="278" x2="558" y2="278"/>
+          <line id="svg_5" fill="none" stroke="#02a2ef" stroke-width="2" x1="2" y1="2" x2="2" y2="278"/>
+        </svg>
+        <div class="modal-inner">
+          <a href="#" class="modal-close" title="Close Modal">×</a>
+          <h3>Modal Title</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form action="/delete/<%= task.id %>" method="post" style="margin: 0;">
+    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">
+      <svg id="crossclose"
+        xmlns="http://www.w3.org/2000/svg" 
+        width="20" height="20" viewBox="0 0 20 20" 
+        style="max-width: 55px; max-height: 55px; display: block;">
+        <g fill="#f00">
+          <path d="M6.854 13.854a.5.5 0 0 1-.708-.708l7-7a.5.5 0 0 1 .708.708z"/>
+          <path d="M6.146 6.854a.5.5 0 1 1 .708-.708l7 7a.5.5 0 0 1-.708.708z"/>
+        </g>
+      </svg>
+    </button>
+  </form>
+</div>
+          </div>
+            <% }) %>
+        </ul>
+    </div>
+  </div>
+ <script>
+  document.querySelectorAll('button.modal-open').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const modalId = btn.getAttribute('data-modal');
+    const modal = document.getElementById(modalId);
+    if (modal) modal.classList.add('active');
+  });
+});
+
+document.querySelectorAll('.modal-close').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    btn.closest('.overlay').classList.remove('active');
+  });
+});
+ </script>
+</body>
+
+</html>

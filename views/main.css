@@ -1,0 +1,324 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Cascadia Mono", sans-serif;
+  background-color: 	#a676a6;
+  color: #fff;
+}
+#maincontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  left: -50px; /* дополнительно центрирует вложенные элементы */
+}
+#mainform{
+  margin-left: 15px !important;
+}
+#mainform, .tasks {
+  display: flex;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: center;
+  gap: 10px;
+  box-sizing: border-box;
+}
+/* Скрываем стандартный чекбокс */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #8458B3; /* Цвет рамки */
+  border-radius: 6px; /* Слегка скругленный квадрат */
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+  outline: none;
+  background-color: white;
+}
+/* При наведении — меняем цвет рамки */
+input[type="checkbox"]:hover {
+  border-color: #A17BD4;
+}
+/* Состояние отмечено — фон и рамка меняются */
+input[type="checkbox"]:checked {
+  background: #6e3a6d;
+  border-color: #6a3f9b;
+}
+/* Галочка */
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+/* Фокус на элементе для доступности */
+input[type="checkbox"]:focus-visible {
+  box-shadow: 0 0 0 3px rgba(132, 88, 179, 0.5);
+}
+li {
+  font-size: 24px;
+  display: flex;
+  align-items: center; /* Центр по вертикали */
+  gap: 8px; /* Отступ между чекбоксом и текстом */
+}
+input[type="text"] {
+  width: 250px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: "Cascadia Mono", monospace;
+  border: 2px solid #8458B3;
+  border-radius: 6px;
+  background-color: white;
+  color: #333;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+input[type="text"]:focus {
+  border-color: #A17BD4;
+  box-shadow: 0 0 6px rgba(132, 88, 179, 0.7);
+}
+button[type="submit"] {
+  background: #b8b4b8;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  padding: 10px 20px;
+  font-family: "Cascadia Mono", monospace;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  user-select: none;
+}
+button[type="submit"]:hover {
+  background: #6e3a6d;
+  box-shadow: 0 0 8px rgba(132, 88, 179, 0.8);
+}
+button[type="submit"]:active {
+  background: linear-gradient(45deg, #6a3f9b, #7e5dbf);
+  box-shadow: none;
+}
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f3e8ff;
+  border-radius: 12px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(161, 123, 212, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+.task:hover {
+  box-shadow: 0 6px 18px rgba(132, 88, 179, 0.4);
+}
+.task li {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 10px;
+  font-size: 18px;
+  color: #2e003e;
+}
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+.icons svg {
+  transition: transform 0.2s ease, fill 0.2s ease;
+}
+.icons svg:hover {
+  transform: scale(1.2);
+  fill: #8458B3;
+}
+.overlay {
+  display: none;
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+  display: block;
+  opacity: 1;
+}
+
+/* Модалка */
+.modal {
+  position: fixed;
+  width: 560px;
+  height: 280px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.3s;
+}
+
+.overlay.active .modal {
+  opacity: 1;
+}
+
+/* Анимация для svg линий */
+svg line {
+  stroke-width: 2px;
+  stroke: rgba(2,162,239,1);
+  stroke-dasharray: 1680;
+  stroke-dashoffset: 1680;
+  transition: stroke 0.3s ease;
+}
+
+/* Перечисляем линии с разными начальными dashoffset */
+svg #svg_2 { stroke-dashoffset: 1680; }
+svg #svg_4 { stroke-dashoffset: -280; }
+svg #svg_3 { stroke-dashoffset: -580; }
+svg #svg_5 { stroke-dashoffset: -280; }
+
+/* Ключевая анимация для линий */
+@keyframes anim-dash {
+  90% {
+    stroke: rgba(2,162,239,1);
+  }
+  100% {
+    stroke: #ffffff;
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+/* Запуск анимации при активном оверлее */
+.overlay.active .modal svg line {
+  animation: anim-dash 0.6s forwards;
+  animation-delay: 0.6s;
+}
+
+/* Модал-контент */
+.modal-inner {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 554px;
+  height: 274px;
+  background: rgba(255,255,255,1);
+  opacity: 0;
+  animation-fill-mode: forwards;
+  transition: opacity 0.3s ease 0.6s;
+}
+
+/* Появление внутреннего блока с задержкой */
+.overlay.active .modal-inner {
+  animation: display 0.6s forwards;
+  animation-delay: 1s;
+  opacity: 1;
+}
+
+/* Ключевая анимация появления */
+@keyframes display {
+  to {
+    opacity: 1;
+  }
+}
+.modal-close {
+  float: right;
+  z-index: 2;
+  color: #424242;
+  margin: 5px 5px 0 0;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  line-height: 20px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+@media (max-width: 480px) {
+  #mainform, .tasks {
+    max-width: 100%;
+    width: 95%;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 auto !important;
+  }
+
+  #mainform {
+    display: flex;
+    align-items: center;
+  }
+
+  input[type="text"] {
+    width: calc(100% - 90px);
+    font-size: 18px;
+    padding: 12px 16px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  button[type="submit"] {
+    padding: 12px 16px;
+    font-size: 18px;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .task {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 14px;
+    margin-right: 40px; /* Убираем отступ */
+  }
+
+  .task li {
+    font-size: 16px;
+    gap: 6px;
+    color: #2e003e;
+  }
+
+  .icons {
+    margin-top: 10px;
+    gap: 10px;
+  }
+}
+/* Планшеты (макс. ширина 768px) */
+@media (max-width: 768px) {
+  #mainform, .tasks {
+    max-width: 90%;
+    width: 100%;
+    gap: 10px;
+  }
+
+  input[type="text"] {
+    width: 70%;
+    font-size: 17px;
+    padding: 10px 14px;
+  }
+
+  button[type="submit"] {
+    padding: 10px 16px;
+    font-size: 16px;
+  }
+
+  .task li {
+    font-size: 17px;
+  }
+}

@@ -1,0 +1,41 @@
+const express = require ('express');
+const app = express();
+const port = 3000;
+const path = require('path')
+const db = require ('./database.js')
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.static(path.join(__dirname, 'views')));
+app.set('view engine', 'ejs');// Устанавливаем EJS как движок шаблонов
+app.set('views', path.join(__dirname, 'views'));
+
+app.get('/', async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM public.tasks');
+    const arraytask = result.rows;
+    res.render('index', {
+      arraytask: arraytask
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Ошибка сервера');
+  }
+});
+
+app.post('/', (req,res) => {
+  newtask = req.body.newtask;
+  if (newtask == '') {
+    return res.send('<script>alert("Задача не может быть пустая"); window.location.href = "/";</script>');
+  } else {
+    db.query('INSERT INTO tasks (task) VALUES ($1) RETURNING *' , [newtask]) 
+    res.redirect ('/')
+}});
+
+app.post('/delete/:id', async (req,res)=>{
+  const id = req.params.id;
+  await db.query('DELETE FROM tasks WHERE id = $1', [id]);
+  res.redirect ('/');
+})
+app.listen(3000,()=>{
+  console.log('server has been started')
+});
