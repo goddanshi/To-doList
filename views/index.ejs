@@ -45,8 +45,12 @@
           <line id="svg_5" fill="none" stroke="#02a2ef" stroke-width="2" x1="2" y1="2" x2="2" y2="278"/>
         </svg>
         <div class="modal-inner">
-          <a href="#" class="modal-close" title="Close Modal">×</a>
-          <h3>Modal Title</h3>
+          <button class="modal-close" style="background:none;border: none;">×</button>
+          <h3 style="color:purple;">Изменить задачу <%= task.task %></h3>
+          <form action="/update/<%= task.id %>" method="post">
+              <input type="text" name="updatetask" id="">
+              <button type="submit">Изменить</button>
+          </form>
         </div>
       </div>
     </div>

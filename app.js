@@ -36,6 +36,25 @@ app.post('/delete/:id', async (req,res)=>{
   await db.query('DELETE FROM tasks WHERE id = $1', [id]);
   res.redirect ('/');
 })
+
+app.post('/update/:id', async (req, res) => {
+  const updatetask = req.body.updatetask;
+  const taskId = req.params.id;
+
+  if (!updatetask || updatetask.trim() === '') {
+    return res.send('<script>alert("Задача не может быть пустой"); window.location.href = "/";</script>');
+  }
+  try {
+    await db.query(
+      'UPDATE tasks SET task = $1 WHERE id = $2 RETURNING *',
+      [updatetask, taskId]
+    );
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Ошибка при обновлении задачи');
+  }
+});
 app.listen(3000,()=>{
   console.log('server has been started')
 });

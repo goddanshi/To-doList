@@ -115,6 +115,7 @@ button[type="submit"]:active {
   align-items: center;
   justify-content: space-between;
   background-color: #f3e8ff;
+  gap: 30px !important;
   border-radius: 12px;
   padding: 10px 16px;
   margin-bottom: 10px;
@@ -223,6 +224,19 @@ svg #svg_5 { stroke-dashoffset: -280; }
   opacity: 0;
   animation-fill-mode: forwards;
   transition: opacity 0.3s ease 0.6s;
+  align-items: center;
+}
+.modal-inner h3{
+  margin-top: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-inner form{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
 }
 
 /* Появление внутреннего блока с задержкой */
