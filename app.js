@@ -3,6 +3,8 @@ const app = express();
 const port = 3000;
 const path = require('path')
 const db = require ('./database.js')
+const chatRouter = require('./chat.js');
+app.use(chatRouter); // подключаем роуты из chat.js
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.use(express.static(path.join(__dirname, 'views')));
@@ -55,6 +57,8 @@ app.post('/update/:id', async (req, res) => {
     res.status(500).send('Ошибка при обновлении задачи');
   }
 });
+
 app.listen(3000,()=>{
   console.log('server has been started')
 });
+
